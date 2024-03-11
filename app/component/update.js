@@ -1,22 +1,40 @@
-import React from "react";
+"use client";
+import axios from "axios";
+import { Formik, Field, Form } from "formik";
+import React, { useEffect, useState } from "react";
 
 function Update({ id, title, userId, task }) {
-  useEffect(() => {
+  const [user, setUser] = useState(id);
+  const update = () => {
     axios
-      .post(`https://jsonplaceholder.typicode.com/todos:${userId}`, {
-        id: id,
-        title: title,
-        userId: userId,
-        completed: task,
+      .post(`https://jsonplaceholder.typicode.com/todos:${id}`, {
+        user,
       })
       .then(function (response) {
         console.log(response);
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(user);
       });
-  });
-  return <div></div>;
+  };
+  return (
+    <div>
+      <Formik
+        initialValues={{ id: id, userId: userId, title: "", completed: "" }}
+        onSubmit={async (values) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          setUser(values);
+          update();
+        }}
+      >
+        <Form>
+          <Field name="name" type="text" />
+          <Field name="checkbox" type="checkbox" />
+          <button type="submit">Submit</button>
+        </Form>
+      </Formik>
+    </div>
+  );
 }
 
 export default Update;

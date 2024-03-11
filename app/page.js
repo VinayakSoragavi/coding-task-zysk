@@ -2,6 +2,7 @@
 import axios from "axios";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Update from "./component/update";
 
 export default function Home() {
   const [value, setValue] = useState([]);
@@ -17,19 +18,6 @@ export default function Home() {
       .finally(function () {});
   }, []);
 
-  useEffect(() => {
-    axios
-      .post("https://jsonplaceholder.typicode.com/todos:", {
-        id: "",
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  });
-
   return (
     <>
       <div className="flex justify-center">
@@ -44,6 +32,12 @@ export default function Home() {
                   <button className="p-1 mt-2 bg-blue-500">
                     Update States
                   </button>
+                  <Update
+                    id={elem.id}
+                    title={elem.title}
+                    task={elem.completed}
+                    userId={elem.userId}
+                  />
                 </div>
               );
             })}
